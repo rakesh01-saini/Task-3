@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#081426">
+  <meta name="description" content="SkyRoute helps you explore live weather, plan trips, and prepare for your next destination.">
+  <title>SkyRoute | Weather & Travel Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="SkyRoute home">
+      <span class="brand-mark"><i class="fa-solid fa-compass"></i></span>
+      <span>sky<span class="brand-accent">route</span><small>WEATHER • TRAVEL • DISCOVER</small></span>
+    </a>
+    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a class="nav-link active" href="#home">Overview</a>
+      <a class="nav-link" href="#forecast">Forecast</a>
+      <a class="nav-link" href="#planner">Trip planner</a>
+      <a class="nav-link" href="#discover">Discover</a>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="unitToggle" title="Switch temperature unit" aria-label="Switch temperature unit">°C</button>
+      <button class="profile-chip" id="locateBtn"><i class="fa-solid fa-location-crosshairs"></i><span>My location</span></button>
+    </div>
+  </header>
+
+  <main class="page-shell" id="home">
+    <section class="welcome-row">
+      <div>
+        <p class="eyebrow"><span class="live-dot"></span> YOUR PERSONAL WEATHER COMPANION</p>
+        <h1>Go where the day <span>takes you.</span></h1>
+        <p class="welcome-copy">Check the forecast. Find your next escape. Make every journey a little smarter.</p>
+      </div>
+      <div class="date-chip"><i class="fa-regular fa-calendar"></i><span id="todayLabel">Your daily outlook</span></div>
+    </section>
+
+    <section class="search-section" aria-label="Search weather by city">
+      <form id="searchForm" class="search-bar">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input id="cityInput" type="search" placeholder="Search a city, e.g. Bhopal, Tokyo, London..." autocomplete="off" aria-label="City name" required>
+        <button class="search-btn" id="searchBtn" type="submit"><i class="fa-solid fa-arrow-right"></i><span>Explore</span></button>
+      </form>
+      <div class="search-hint"><i class="fa-solid fa-circle-info"></i> Try a city anywhere in the world</div>
+      <div id="searchStatus" class="search-status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="weather-layout" aria-label="Current weather">
+      <article class="current-weather glass-card">
+        <div class="weather-card-top">
+          <div>
+            <p class="eyebrow">CURRENT CONDITIONS</p>
+            <h2 id="cityName">Bhopal, India</h2>
+            <p class="muted" id="weatherDate">Getting the latest forecast...</p>
+          </div>
+          <button class="favorite-btn" id="favoriteBtn" aria-label="Save this city" title="Save this city"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <div class="current-main">
+          <div class="temperature-wrap">
+            <div class="weather-icon" id="currentIcon" aria-hidden="true">☀️</div>
+            <div><div class="temperature" id="currentTemp">--<span>°C</span></div><p id="conditionText" class="condition">Loading weather</p></div>
+          </div>
+          <div class="high-low"><span><i class="fa-solid fa-arrow-up"></i> <b id="todayHigh">--°</b></span><span><i class="fa-solid fa-arrow-down"></i> <b id="todayLow">--°</b></span></div>
+        </div>
+        <div class="weather-divider"></div>
+        <div class="weather-stats">
+          <div class="weather-stat"><span class="stat-icon"><i class="fa-solid fa-temperature-half"></i></span><span class="stat-label">Feels like</span><strong id="feelsLike">--°</strong></div>
+          <div class="weather-stat"><span class="stat-icon"><i class="fa-solid fa-droplet"></i></span><span class="stat-label">Humidity</span><strong id="humidity">--%</strong></div>
+          <div class="weather-stat"><span class="stat-icon"><i class="fa-solid fa-wind"></i></span><span class="stat-label">Wind</span><strong id="windSpeed">-- km/h</strong></div>
+          <div class="weather-stat"><span class="stat-icon"><i class="fa-solid fa-eye"></i></span><span class="stat-label">Visibility</span><strong id="visibility">-- km</strong></div>
+        </div>
+        <p class="api-credit">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a></p>
+      </article>
+
+      <aside class="side-stack">
+        <article class="sun-card glass-card">
+          <div class="card-heading"><div><p class="eyebrow">DAYLIGHT</p><h3>Sunrise & sunset</h3></div><span class="round-icon"><i class="fa-regular fa-sun"></i></span></div>
+          <div class="sun-times">
+            <div><span class="sun-symbol">🌅</span><small>Sunrise</small><strong id="sunrise">--:--</strong></div>
+            <div class="sun-path"><span></span><i class="fa-solid fa-sun"></i></div>
+            <div><span class="sun-symbol">🌇</span><small>Sunset</small><strong id="sunset">--:--</strong></div>
+          </div>
+          <div class="sun-foot"><i class="fa-regular fa-clock"></i><span id="daylightText">Daylight details appear here</span></div>
+        </article>
+        <article class="advice-card glass-card">
+          <div class="card-heading"><div><p class="eyebrow">SMART TRAVEL TIP</p><h3 id="tipTitle">Ready for the forecast?</h3></div><span class="round-icon mint"><i class="fa-solid fa-wand-magic-sparkles"></i></span></div>
+          <p id="weatherTip">Search for a destination to get weather-aware packing tips for your journey.</p>
+          <div class="tip-tags" id="tipTags"><span>Plan ahead</span><span>Travel smart</span></div>
+        </article>
+      </aside>
+    </section>
+
+    <section class="section-block" id="forecast">
+      <div class="section-heading">
+        <div><p class="eyebrow">PLAN AHEAD</p><h2>Next 5 days</h2><p class="muted">A quick look at what the skies have planned.</p></div>
+        <span class="section-badge"><i class="fa-solid fa-calendar-week"></i> 5-day outlook</span>
+      </div>
+      <div class="forecast-grid" id="forecastGrid">
+        <div class="forecast-placeholder"><i class="fa-solid fa-cloud-sun"></i><span>Forecast will appear here</span></div>
+      </div>
+    </section>
+
+    <section class="section-block planner-section" id="planner">
+      <div class="section-heading">
+        <div><p class="eyebrow">YOUR NEXT ADVENTURE</p><h2>Make a trip plan</h2><p class="muted">Save your destination and build a checklist before you go.</p></div>
+        <span class="section-badge"><i class="fa-solid fa-suitcase-rolling"></i> Trip workspace</span>
+      </div>
+      <div class="planner-grid">
+        <form class="glass-card trip-form" id="tripForm">
+          <div class="form-title"><span class="round-icon"><i class="fa-solid fa-map-location-dot"></i></span><div><h3>Trip details</h3><p class="muted">Start with the basics</p></div></div>
+          <label for="tripDestination">Destination</label>
+          <input id="tripDestination" type="text" placeholder="Where are you going?" required maxlength="70">
+          <div class="form-row">
+            <div><label for="tripStart">Start date</label><input id="tripStart" type="date" required></div>
+            <div><label for="tripEnd">End date</label><input id="tripEnd" type="date" required></div>
+          </div>
+          <label for="tripStyle">Travel style</label>
+          <select id="tripStyle">
+            <option value="relax">Relax & recharge</option>
+            <option value="adventure">Adventure</option>
+            <option value="culture">Culture & sightseeing</option>
+            <option value="food">Food exploration</option>
+            <option value="work">Work trip</option>
+          </select>
+          <button class="primary-btn full-width" type="submit"><i class="fa-solid fa-plus"></i> Save trip plan</button>
+          <p class="form-note"><i class="fa-solid fa-lock"></i> Your trip plans stay in this browser.</p>
+        </form>
+
+        <div class="glass-card checklist-card">
+          <div class="form-title"><span class="round-icon mint"><i class="fa-solid fa-list-check"></i></span><div><h3>Packing checklist</h3><p class="muted">Tick items as you get ready</p></div></div>
+          <div class="checklist-progress"><div class="progress-track"><span id="checkProgress"></span></div><small id="checkProgressText">0 of 6 packed</small></div>
+          <div class="checklist" id="checklist">
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Identity & travel documents</span><i class="fa-regular fa-id-card item-icon"></i></label>
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Phone & charger</span><i class="fa-solid fa-mobile-screen item-icon"></i></label>
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Wallet & payment cards</span><i class="fa-solid fa-wallet item-icon"></i></label>
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Water bottle</span><i class="fa-solid fa-bottle-water item-icon"></i></label>
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Weather-appropriate clothes</span><i class="fa-solid fa-shirt item-icon"></i></label>
+            <label class="check-item"><input type="checkbox"><span class="custom-check"><i class="fa-solid fa-check"></i></span><span>Personal essentials</span><i class="fa-solid fa-kit-medical item-icon"></i></label>
+          </div>
+          <button class="text-btn" id="resetChecklist" type="button"><i class="fa-solid fa-rotate-left"></i> Reset checklist</button>
+        </div>
+      </div>
+      <div class="saved-trips-wrap">
+        <div class="saved-trips-heading"><h3><i class="fa-regular fa-bookmark"></i> Saved trips</h3><span id="tripCount">0 trips</span></div>
+        <div class="saved-trips" id="savedTrips"><div class="empty-state"><i class="fa-solid fa-suitcase"></i><p>Your saved trip plans will show up here.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section-block" id="discover">
+      <div class="section-heading">
+        <div><p class="eyebrow">FIND YOUR VIBE</p><h2>Travel inspiration</h2><p class="muted">Pick a kind of escape and explore a destination.</p></div>
+      </div>
+      <div class="destination-grid">
+        <button class="destination-card mountains" data-city="Manali"><span class="destination-overlay"></span><span class="destination-content"><span class="destination-tag">MOUNTAIN ESCAPE</span><strong>Manali</strong><small>Cool air • Scenic trails</small><span class="destination-cta">Check weather <i class="fa-solid fa-arrow-right"></i></span></span></button>
+        <button class="destination-card coast" data-city="Goa"><span class="destination-overlay"></span><span class="destination-content"><span class="destination-tag">COASTAL BREAK</span><strong>Goa</strong><small>Beaches • Sunset views</small><span class="destination-cta">Check weather <i class="fa-solid fa-arrow-right"></i></span></span></button>
+        <button class="destination-card cityscape" data-city="Jaipur"><span class="destination-overlay"></span><span class="destination-content"><span class="destination-tag">CULTURE & COLOUR</span><strong>Jaipur</strong><small>Heritage • Local food</small><span class="destination-cta">Check weather <i class="fa-solid fa-arrow-right"></i></span></span></button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a class="brand footer-brand" href="#home"><span class="brand-mark"><i class="fa-solid fa-compass"></i></span><span>sky<span class="brand-accent">route</span><small>MAKE EVERY JOURNEY COUNT</small></span></a>
+      <p>Built with HTML, CSS, JavaScript & Open-Meteo API.</p>
+      <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    </footer>
+  </main>
+</body>
+</html>
